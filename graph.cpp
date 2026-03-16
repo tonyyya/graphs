@@ -43,3 +43,39 @@ void Graph::clean() {
     vertexCount = 0;
     edgeCount = 0;
 }
+Graph::Graph(const Graph& other) {
+    adj = nullptr;
+    degrees = nullptr;
+    capacities = nullptr;
+    copyFrom(other);
+}
+Graph& Graph::operator=(const Graph& other) {
+    if (this != &other) {
+        clean();
+        copyFrom(other);
+    }
+    return *this;
+}
+void Graph::copyFrom(const Graph& other) {
+    vertexCount = other.vertexCount;
+    edgeCount = other.edgeCount;
+    
+    if (vertexCount == 0) {
+        adj = nullptr;
+        degrees = nullptr;
+        capacities = nullptr;
+        return;
+    }
+adj = new int*[vertexCount];
+    degrees = new int[vertexCount];
+    capacities = new int[vertexCount];
+    
+    for (int i = 0; i < vertexCount; i++) {
+        capacities[i] = other.capacities[i];
+        degrees[i] = other.degrees[i];
+        adj[i] = new int[capacities[i]];
+        for (int j = 0; j < degrees[i]; j++) {
+            adj[i][j] = other.adj[i][j];
+        }
+    }
+}
