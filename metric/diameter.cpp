@@ -1,5 +1,5 @@
 #pragma once
-#include "IMetric.hpp"
+#include "metric.hpp"
 
 class MetricDiameter : public IMetric {
 private:
