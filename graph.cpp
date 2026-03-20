@@ -79,3 +79,42 @@ adj = new int*[vertexCount];
         }
     }
 }
+void Graph::validateVertex(int v) const {
+    if (v < 0 || v >= vertexCount) {
+        throw std::out_of_range("Vertex " + std::to_string(v) + " does not exist");
+    }
+}
+int Graph::addVertex() {
+    int newV = vertexCount;
+    vertexCount++;
+}
+int** newAdj = new int*[vertexCount];
+    int* newDegrees = new int[vertexCount];
+    int* newCapacities = new int[vertexCount];
+}
+
+for (int i = 0; i < newV; i++) {
+        newAdj[i] = adj[i];
+        newDegrees[i] = degrees[i];
+        newCapacities[i] = capacities[i];
+    }
+newAdj[newV] = new int[1];
+    newDegrees[newV] = 0;
+    newCapacities[newV] = 1;
+
+if (adj != nullptr) {
+        delete[] adj;
+        delete[] degrees;
+        delete[] capacities;
+}
+    
+adj = newAdj;
+    degrees = newDegrees;
+    capacities = newCapacities;
+    
+    return newV;
+}
+
+bool Graph::hasVertex(int v) const {
+    return v >= 0 && v < vertexCount;
+}
