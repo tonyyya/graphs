@@ -12,14 +12,14 @@ public:
         auto g = std::make_unique<Graph>(n_);
         
         if (k_ == 0) {
-            // Граф без мостов — создаём цикл
+            
             for (int i = 0; i < n_; i++) {
                 g->addEdge(i, (i + 1) % n_);
             }
             return g;
         }
         
-        // Создаём k+1 блок, соединённых k мостами
+        
         int verticesPerBlock = n_ / (k_ + 1);
         int remainder = n_ % (k_ + 1);
         
@@ -30,7 +30,7 @@ public:
             int blockSize = verticesPerBlock + (block < remainder ? 1 : 0);
             int startVertex = currentVertex;
             
-            // Создаём блок (цикл для связности внутри блока)
+           
             if (blockSize >= 3) {
                 for (int i = 0; i < blockSize; i++) {
                     int u = startVertex + i;
@@ -40,9 +40,7 @@ public:
             } else if (blockSize == 2) {
                 g->addEdge(startVertex, startVertex + 1);
             }
-            // blockSize == 1: изолированная вершина в блоке
             
-            // Соединяем с предыдущим блоком мостом
             if (block > 0 && prevBlockLastVertex >= 0) {
                 g->addEdge(prevBlockLastVertex, startVertex);
             }
