@@ -1,7 +1,7 @@
 #pragma once
 #include "DFS.hpp"
 
-class MetricArticulationPoints : public DFSAlgorithm, public IMetric {
+class MetricArticulationPoints : public DFSAlgorithm, public metric {
 private:
     int* low;
     int count;
