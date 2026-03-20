@@ -1,7 +1,7 @@
 #pragma once
 #include "DFS.hpp"
 
-class MetricComponents : public DFSAlgorithm, public IMetric {
+class MetricComponents : public DFSAlgorithm, public metric {
 private:
     int count;
     
