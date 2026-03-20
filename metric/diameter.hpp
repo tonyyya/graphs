@@ -1,7 +1,7 @@
 #pragma once
 #include "metric.hpp"
 
-class MetricDiameter : public IMetric {
+class MetricDiameter : public metric {
 private:
     int result;
     
