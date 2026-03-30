@@ -31,6 +31,8 @@ public:
     }
 
     bool hasEdge(int u, int v) const override {
+        if (u < 0 || v < 0 || u >= verticesCount() || v >= verticesCount())
+            return false;
         for (int x : adj[u])
             if (x == v) return true;
         return false;
