@@ -2,7 +2,7 @@
 #include "../generators/Random.hpp"
 #include "../metrics/Diameter.hpp"
 #include "../metrics/Density.hpp"
-#include "../metrics/Components.hpp"
+#include "../generators/Components.hpp"
 #include "../serialization/GraphViz.hpp"
 #include "../parsers/EdgeListParser.hpp"
 
