@@ -156,28 +156,24 @@ int main(int argc, char** argv) {
                 }
                 else if (type == "bridges" && i + 2 < argc) {
                     int n = std::stoi(argv[++i]);
-                    int k = std::stoi(argv[++i]);
-                    BridgesGenerator gen(n, k);
+                    BridgesGenerator gen(n);
                     graph = gen.generate();
                     graphLoaded = true;
                 }
                 else if (type == "articulation" && i + 2 < argc) {
                     int n = std::stoi(argv[++i]);
-                    int k = std::stoi(argv[++i]);
-                    ArticulationGenerator gen(n, k);
+                    ArticulationGenerator gen(n);
                     graph = gen.generate();
                     graphLoaded = true;
                 }
                 else if (type == "twobridges" && i + 2 < argc) {
                     int n = std::stoi(argv[++i]);
-                    int k = std::stoi(argv[++i]);
-                    TwoBridgesGenerator gen(n, k);
+                    TwoBridgesGenerator gen(n);
                     graph = gen.generate();
                     graphLoaded = true;
                 }
                 else if (type == "halin" && i + 1 < argc) {
-                    int n = std::stoi(argv[++i]);
-                    HalinGenerator gen(n);
+                    HalinGenerator gen();
                     graph = gen.generate();
                     graphLoaded = true;
                 }
