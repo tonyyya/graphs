@@ -118,7 +118,7 @@ TEST(test_density_sparse) {
     g.addEdge(0,1);
     g.addEdge(1,2);
     DensityMetric d;
-    d.compute(*g);
+    d.compute(g);
     assert(d.result() < 0.5);
 }
 
