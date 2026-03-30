@@ -2,77 +2,111 @@
 #include "../generators/Random.hpp"
 #include "../metrics/Diameter.hpp"
 #include "../metrics/Density.hpp"
+#include "../metrics/Components.hpp"
 #include "../serialization/GraphViz.hpp"
 #include "../parsers/EdgeListParser.hpp"
-#include "../metrics/Components.hpp"
 
 #include <iostream>
+#include <string>
+#include <memory>
+
+void printUsage() {
+    std::cout << "Usage:\n";
+    std::cout << "  generate complete N\n";
+    std::cout << "  generate random N P\n";
+    std::cout << "  parse file.txt\n";
+    std::cout << "  metric diameter\n";
+    std::cout << "  metric density\n";
+    std::cout << "  metric components\n";
+    std::cout << "\nExamples:\n";
+    std::cout << "  graph.exe generate random 10 0.3\n";
+    std::cout << "  graph.exe generate random 10 0.3 metric diameter\n";
+    std::cout << "  graph.exe generate random 10 0.3 metric diameter metric density\n";
+    std::cout << "  graph.exe parse graph.txt metric components\n";
+}
 
 int main(int argc, char** argv) {
-
     if (argc < 2) {
-        std::cout << "Usage:\n";
-        std::cout << " generate complete N\n";
-        std::cout << " generate random N P\n";
-        std::cout << " metric diameter\n";
-        std::cout << " parse file.txt\n";
+        printUsage();
         return 0;
     }
-
-    std::string mode = argv[1];
 
     std::unique_ptr<IGraph> g;
+    bool graphCreated = false;
+    bool saveGraph = true;
 
-    if (mode == "generate") {
-        std::string type = argv[2];
+    for (int i = 1; i < argc; i++) {
+        std::string cmd = argv[i];
 
-        if (type == "complete") {
-            int n = std::stoi(argv[3]);
-            CompleteGenerator gen(n);
-            g = gen.generate();
+        if (cmd == "generate" && i + 2 < argc) {
+            std::string type = argv[i + 1];
+            
+            if (type == "complete" && i + 3 < argc) {
+                int n = std::stoi(argv[i + 2]);
+                CompleteGenerator gen(n);
+                g = gen.generate();
+                graphCreated = true;
+                i += 3;
+            }
+            else if (type == "random" && i + 4 < argc) {
+                int n = std::stoi(argv[i + 2]);
+                double p = std::stod(argv[i + 3]);
+                RandomGenerator gen(n, p);
+                g = gen.generate();
+                graphCreated = true;
+                i += 4;
+            }
         }
+        else if (cmd == "parse" && i + 1 < argc) {
+            EdgeListParser parser;
+            g = parser.parse(argv[i + 1]);
+            if (g) {
+                graphCreated = true;
+            }
+            i += 2;
+        }
+        else if (cmd == "metric" && i + 1 < argc) {
+            if (!graphCreated) {
+                std::cout << "Error: graph not created. Use 'generate' or 'parse' first.\n";
+                return 1;
+            }
 
-        if (type == "random") {
-            int n = std::stoi(argv[3]);
-            double p = std::stod(argv[4]);
-            RandomGenerator gen(n, p);
-            g = gen.generate();
+            std::string metricName = argv[i + 1];
+
+            if (metricName == "diameter") {
+                DiameterMetric d;
+                d.compute(*g);
+                std::cout << "Diameter: " << d.result() << "\n";
+                saveGraph = false;
+            }
+            else if (metricName == "density") {
+                DensityMetric d;
+                d.compute(*g);
+                std::cout << "Density: " << d.result() << "\n";
+                saveGraph = false;
+            }
+            else if (metricName == "components") {
+                ComponentsMetric c;
+                c.compute(*g);
+                std::cout << "Components: " << c.result() << "\n";
+                saveGraph = false;
+            }
+            else {
+                std::cout << "Unknown metric: " << metricName << "\n";
+            }
+
+            i += 2;
         }
     }
 
-    if (mode == "parse") {
-        EdgeListParser parser;
-        g = parser.parse(argv[2]);
+    if (graphCreated && saveGraph) {
+        GraphViz::save(*g, "graph.dot");
+        std::cout << "Graph saved to graph.dot\n";
     }
 
-    if (!g) {
-        std::cout << "Graph not created\n";
-        return 0;
+    if (!graphCreated) {
+        printUsage();
     }
 
-    // метрики
-    if (argc > 2 && std::string(argv[1]) == "metric") {
-        std::string m = argv[2];
-
-        if (m == "diameter") {
-            DiameterMetric d;
-            d.compute(*g);
-            std::cout << d.result() << "\n";
-        }
-
-        if (m == "density") {
-            DensityMetric d;
-            d.compute(*g);
-            std::cout << d.result() << "\n";
-        }
-
-        if (m == "components") {
-            ComponentsMetric c;
-            c.compute(*g);
-            std::cout << c.result() << "\n";
-        } }
-
-    GraphViz::save(*g, "graph.dot");
-
-    std::cout << "Graph saved to graph.dot\n";
+    return 0;
 }
