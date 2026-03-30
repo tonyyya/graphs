@@ -5,6 +5,7 @@
 #include "../generators/Components.hpp"
 #include "../serialization/GraphViz.hpp"
 #include "../parsers/EdgeListParser.hpp"
+#include "../metrics/Components.hpp"
 
 #include <iostream>
 
@@ -71,7 +72,6 @@ int main(int argc, char** argv) {
             c.compute(*g);
             std::cout << c.result() << "\n";
         }
-    }
 
     GraphViz::save(*g, "graph.dot");
 
