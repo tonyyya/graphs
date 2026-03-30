@@ -152,7 +152,7 @@ TEST(test_components_metric) {
     g.addEdge(1,2);
     g.addEdge(3,4);
     ComponentsMetric c;
-    c.compute(*g);
+    c.compute(g);
     assert(c.result() == 3);
 }
 
