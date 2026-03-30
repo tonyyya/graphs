@@ -2,7 +2,6 @@
 #include "../generators/Random.hpp"
 #include "../metrics/Diameter.hpp"
 #include "../metrics/Density.hpp"
-#include "../generators/Components.hpp"
 #include "../serialization/GraphViz.hpp"
 #include "../parsers/EdgeListParser.hpp"
 #include "../metrics/Components.hpp"
@@ -71,7 +70,7 @@ int main(int argc, char** argv) {
             ComponentsMetric c;
             c.compute(*g);
             std::cout << c.result() << "\n";
-        }
+        } }
 
     GraphViz::save(*g, "graph.dot");
 
