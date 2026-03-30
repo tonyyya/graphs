@@ -18,11 +18,6 @@ void printUsage() {
     std::cout << "  metric diameter\n";
     std::cout << "  metric density\n";
     std::cout << "  metric components\n";
-    std::cout << "\nExamples:\n";
-    std::cout << "  graph.exe generate random 10 0.3\n";
-    std::cout << "  graph.exe generate random 10 0.3 metric diameter\n";
-    std::cout << "  graph.exe generate random 10 0.3 metric diameter metric density\n";
-    std::cout << "  graph.exe parse graph.txt metric components\n";
 }
 
 int main(int argc, char** argv) {
@@ -38,23 +33,23 @@ int main(int argc, char** argv) {
     for (int i = 1; i < argc; i++) {
         std::string cmd = argv[i];
 
-        if (cmd == "generate" && i + 2 < argc) {
+        if (cmd == "generate" && i + 1 < argc) {
             std::string type = argv[i + 1];
             
-            if (type == "complete" && i + 3 < argc) {
+            if (type == "complete" && i + 2 < argc) {
                 int n = std::stoi(argv[i + 2]);
                 CompleteGenerator gen(n);
                 g = gen.generate();
                 graphCreated = true;
-                i += 3;
+                i += 2;
             }
-            else if (type == "random" && i + 4 < argc) {
+            else if (type == "random" && i + 3 < argc) {
                 int n = std::stoi(argv[i + 2]);
                 double p = std::stod(argv[i + 3]);
                 RandomGenerator gen(n, p);
                 g = gen.generate();
                 graphCreated = true;
-                i += 4;
+                i += 3;
             }
         }
         else if (cmd == "parse" && i + 1 < argc) {
@@ -63,11 +58,11 @@ int main(int argc, char** argv) {
             if (g) {
                 graphCreated = true;
             }
-            i += 2;
+            i += 1;
         }
         else if (cmd == "metric" && i + 1 < argc) {
             if (!graphCreated) {
-                std::cout << "Error: graph not created. Use 'generate' or 'parse' first.\n";
+                std::cout << "Error: graph not created\n";
                 return 1;
             }
 
@@ -91,11 +86,7 @@ int main(int argc, char** argv) {
                 std::cout << "Components: " << c.result() << "\n";
                 saveGraph = false;
             }
-            else {
-                std::cout << "Unknown metric: " << metricName << "\n";
-            }
-
-            i += 2;
+            i += 1;
         }
     }
 
