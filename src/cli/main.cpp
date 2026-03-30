@@ -173,7 +173,7 @@ int main(int argc, char** argv) {
                     graphLoaded = true;
                 }
                 else if (type == "halin" && i + 1 < argc) {
-                    HalinGenerator gen();
+                    HalinGenerator gen;
                     graph = gen.generate();
                     graphLoaded = true;
                 }
