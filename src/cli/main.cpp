@@ -1,5 +1,5 @@
 #include "../generators/Complete.hpp"
-#include "../generator/CompleteBipartite.hpp"
+#include "../generators/CompleteBipartite.hpp"
 #include "../generators/Tree.hpp"
 #include "../generators/Star.hpp"
 #include "../generators/Cycle.hpp"
