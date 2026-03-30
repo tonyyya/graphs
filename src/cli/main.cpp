@@ -1,5 +1,5 @@
 #include "../generators/Complete.hpp"
-#include "../generators/CompleteBipartite.hpp"
+#include "../generator/CompleteBipartite.hpp"
 #include "../generators/Tree.hpp"
 #include "../generators/Star.hpp"
 #include "../generators/Cycle.hpp"
@@ -154,7 +154,7 @@ int main(int argc, char** argv) {
                     graph = gen.generate();
                     graphLoaded = true;
                 }
-                else if (type == "bridges" && i + 2 < argc) {
+                else if (type == "bridges" && i + 1 < argc) {
                     int n = std::stoi(argv[++i]);
                     BridgesGenerator gen(n);
                     graph = gen.generate();
@@ -162,11 +162,12 @@ int main(int argc, char** argv) {
                 }
                 else if (type == "articulation" && i + 2 < argc) {
                     int n = std::stoi(argv[++i]);
-                    ArticulationGenerator gen(n);
+                    int k = std::stoi(argv[++i]);
+                    ArticulationGenerator gen(n, k);
                     graph = gen.generate();
                     graphLoaded = true;
                 }
-                else if (type == "twobridges" && i + 2 < argc) {
+                else if (type == "twobridges" && i + 1 < argc) {
                     int n = std::stoi(argv[++i]);
                     TwoBridgesGenerator gen(n);
                     graph = gen.generate();
