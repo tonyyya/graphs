@@ -9,6 +9,7 @@ class GraphViz {
 private:
     static std::vector<std::pair<int, int>> findSpanningTree(const IGraph& g) {
         int n = g.verticesCount();
+        if (n == 0) return {};
         std::vector<bool> visited(n, false);
         std::vector<std::pair<int, int>> treeEdges;
         std::vector<int> stack;
@@ -34,6 +35,7 @@ private:
 
     static std::vector<int> findCycle(const IGraph& g) {
         int n = g.verticesCount();
+        if (n == 0) return {};
         std::vector<int> parent(n, -1);
         std::vector<bool> visited(n, false);
         std::vector<int> stack;
@@ -78,7 +80,11 @@ public:
                      const std::vector<std::vector<int>>& clusters = {}) {
         
         std::ofstream file(filename);
-        file << "digraph G {\n";
+        if (!file.is_open()) {
+            throw std::runtime_error("Cannot open file: " + filename);
+        }
+        
+        file << "graph G {\n";
         file << "  rankdir=LR;\n";
         file << "  node [shape=circle];\n";
         
@@ -130,13 +136,13 @@ public:
                     }
                     
                     if (isTreeEdge) {
-                        file << "  " << i << " -> " << j << " [color=blue, style=bold];\n";
+                        file << "  " << i << " -- " << j << " [color=blue, style=bold];\n";
                     }
                     else if (isCycleEdge) {
-                        file << "  " << i << " -> " << j << " [color=red, style=bold];\n";
+                        file << "  " << i << " -- " << j << " [color=red, style=bold];\n";
                     }
                     else {
-                        file << "  " << i << " -> " << j << ";\n";
+                        file << "  " << i << " -- " << j << ";\n";
                     }
                 }
             }
